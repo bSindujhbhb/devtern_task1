@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h2 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            color: #555555;
+        }
+
+        input {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Login</title>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="na">Email/Username:</label>
+            <input type="text" id="na" name="na" required oninput="validateEmail()">
+            <p id="email-error" class="error"></p>
+
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <p id="error-message" class="error"></p>
+    </div>
+
+    <script>
+        function validateEmail() {
+            var na = document.getElementById("na").value;
+            var emailError = document.getElementById("email-error");
+
+            if (!isValidEmail(na)) {
+                emailError.innerText = "Enter a valid email address.";
+            } else {
+                emailError.innerText = "";
+            }
+        }
+
+        function isValidEmail(email) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var na = document.getElementById("na").value;
+            var pass = document.getElementById("pass").value;
+
+            if (!isValidEmail(na)) {
+                document.getElementById("email-error").innerText = "Enter a valid email address.";
+                return;
+            }
+
+            document.getElementById("email-error").innerText = "";
+            simulateDatabaseQuery(na, pass);
+        });
+
+        function simulateDatabaseQuery(username, password) {
+            var userDatabase = [
+                { username: "chsindhu.v@gmail.com", password: "123" }
+            ];
+
+            var userFound = false;
+
+            for (var i = 0; i < userDatabase.length; i++) {
+                if (userDatabase[i].username === username && userDatabase[i].password === password) {
+                    userFound = true;
+                    break;
+                }
+            }
+
+            if (userFound) {
+                document.getElementById("error-message").innerText = "";
+                alert("Login successful!");
+            } else {
+                document.getElementById("error-message").innerText = "Invalid credentials. Please try again.";
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>
